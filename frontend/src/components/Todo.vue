@@ -1,5 +1,5 @@
 <template>
-  <v-list-item>
+  <v-list-item :active="false"> <!--Otherwise v-list-item--active class is applied on click-->
     <template v-slot:prepend>
       <v-icon
           icon="mdi-check-circle"
