@@ -1,7 +1,12 @@
 <template>
   <v-list-item>
     <template v-slot:prepend>
-      <v-icon icon="mdi-check-circle" :color="isDone ? 'green' : 'red'"/>
+      <v-icon
+          icon="mdi-check-circle"
+          :color="isDone ?
+          'green' : 'red'"
+          @click.stop="$emit('updateTodoStatus', id)"
+      />
     </template>
     <v-list-item-title v-text="description"></v-list-item-title>
     <template v-slot:append>
@@ -38,6 +43,7 @@ interface TodoProps {
 defineProps<TodoProps>();
 defineEmits<{
   (e: 'deleteTodo', id: number): void
+  (e: 'updateTodoStatus', id: number): void
 }>()
 </script>
 
