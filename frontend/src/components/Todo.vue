@@ -9,7 +9,8 @@
         <template v-slot:default="{ isHovering, props }">
           <v-icon icon="mdi-trash-can-outline"
                   v-bind="props"
-                  :color="isHovering ? 'red-accent-4' : undefined"/>
+                  :color="isHovering ? 'red-accent-4' : undefined"
+                  @click.stop="$emit('deleteTodo', id)"/>
         </template>
       </v-hover>
     </template>
@@ -27,6 +28,7 @@ export default {
  * (https://github.com/vuejs/language-tools/issues/1232)
  */
 interface TodoProps {
+  id: number,
   description: string,
   isDone: boolean
 }
@@ -34,6 +36,9 @@ interface TodoProps {
 
 <script setup lang="ts">
 defineProps<TodoProps>();
+defineEmits<{
+  (e: 'deleteTodo', id: number): void
+}>()
 </script>
 
 <style scoped>
