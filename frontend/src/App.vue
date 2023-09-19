@@ -2,9 +2,11 @@
 </script>
 
 <template>
-  <main>
-    Hello World
-  </main>
+  <v-app>
+    <v-main>
+      Hello World
+    </v-main>
+  </v-app>
 </template>
 
 <style scoped>
