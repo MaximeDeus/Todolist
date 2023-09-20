@@ -1,3 +1,4 @@
+require('dotenv').config(); // load var from .env file
 const server = require('./server');
 
 (async () => {
