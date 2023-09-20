@@ -1,5 +1,5 @@
 <template>
-  <v-list-item :active="false"> <!--Otherwise v-list-item--active class is applied on click-->
+  <v-list-item :ripple=false :active="false">
     <template v-slot:prepend>
       <v-icon
           icon="mdi-check-circle"
@@ -8,7 +8,18 @@
           @click.stop="$emit('updateTodoStatus', id)"
       />
     </template>
-    <v-list-item-title v-text="description"></v-list-item-title>
+    <template v-slot:default>
+      <v-text-field
+          style="width: 400px"
+          v-model="description"
+          variant="solo"
+          counter="16"
+          placeholder="Faire les courses"
+          maxlength="16"> <!-- todo handle min length validator -->
+
+      </v-text-field>
+    </template>
+
     <template v-slot:append>
       <v-hover>
         <template v-slot:default="{ isHovering, props }">
@@ -40,6 +51,9 @@ interface TodoProps {
 </script>
 
 <script setup lang="ts">
+import {ref} from "vue";
+
+const description = ref('');
 defineProps<TodoProps>();
 defineEmits<{
   (e: 'deleteTodo', id: number): void
