@@ -1,11 +1,22 @@
 const http = require('http');
 const express = require('express');
+const router = require("./routes");
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const errorControllerHandler = require("./middleware/errorControllerHandler");
 
 function init() {
   const app = express();
-  app.get('/', (req, res) => {
-    res.send('Hello World!')
-  });
+
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  const corsOptions = {
+    origin: `http://${process.env.CLIENT_BASE_URL}:${process.env.CLIENT_PORT}`,
+  };
+  app.use(cors(corsOptions));
+  router.loadRoutes(app);
+  // Used for having a generic error treatment for every controllers
+  app.use(errorControllerHandler);
   return app;
 }
 
