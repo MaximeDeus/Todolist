@@ -1,3 +1,4 @@
+const db = require("../db");
 exports.getTodos = async () => {
-    throw 'TODO';
-};
+    return await db.any('SELECT * FROM todos');
+}
