@@ -61,17 +61,19 @@ export default {
 </script>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import Todo from "@/components/Todo.vue";
+import customAxios from "@/axios";
 
 const dialogAddTodo = ref(false);
 const description = ref('');
+const todos = ref([]);
 
-const todos = ref([
-  // reactive doesn't seem to be required here, don't know exactly why (automatically handled by Vue ?)
-  {id: 1, description: 'Tâche 1', isDone: false},
-  {id: 2, description: 'Tâche 2', isDone: true},
-]);
+onMounted(async () => {
+  // TODO make API call and if success, load todo
+  const data = await customAxios.get("api/todos");
+  console.log(data);
+})
 function addTodo() {
   // TODO make API call and if success, add todo
   const todo = {
