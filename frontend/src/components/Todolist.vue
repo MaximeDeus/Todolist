@@ -63,16 +63,18 @@ export default {
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import Todo from "@/components/Todo.vue";
+import type {TodoProperties} from "@/types/TodoProperties";
 import customAxios from "@/axios";
 
 const dialogAddTodo = ref(false);
 const description = ref('');
-const todos = ref([]);
+const todos = ref<TodoProperties[]>([]);
 
 onMounted(async () => {
-  // TODO make API call and if success, load todo
-  const data = await customAxios.get("api/todos");
-  console.log(data);
+  const {data} = await customAxios.get("api/todos");
+  if (data){
+    data.forEach((todo: TodoProperties) => todos.value.push(todo));
+  }
 })
 function addTodo() {
   // TODO make API call and if success, add todo

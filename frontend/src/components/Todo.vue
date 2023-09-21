@@ -39,22 +39,14 @@ export default {
   name: "Todo"
 }
 
-/**
- * Interface must be declared outside script setup, otherwise Volar warning appears
- * (https://github.com/vuejs/language-tools/issues/1232)
- */
-interface TodoProps {
-  id: number,
-  description: string,
-  isDone: boolean
-}
 </script>
 
 <script setup lang="ts">
 import {ref} from "vue";
+import type {TodoProperties} from "@/types/TodoProperties";
 
 const description = ref('');
-defineProps<TodoProps>();
+defineProps<TodoProperties>();
 defineEmits<{
   (e: 'deleteTodo', id: number): void
   (e: 'updateTodoStatus', id: number): void
