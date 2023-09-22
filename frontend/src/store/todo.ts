@@ -17,7 +17,7 @@ export const useTodoStore = defineStore('todo', () => {
     }
 
     async function addTodo(description: string) {
-        const todo : TodoProperties = await customAxios.post("api/todos", {
+        const {data: todo} : {data: TodoProperties} = await customAxios.post("api/todos", {
             description,
         });
         if (todo){
