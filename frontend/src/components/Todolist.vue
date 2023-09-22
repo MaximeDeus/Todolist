@@ -3,10 +3,16 @@
     <v-list class="elevation-2">
       <v-list-subheader color="blue">TODOLIST</v-list-subheader>
       <todo
+          v-if="todos.length > 0"
           v-for="(todo) in todos"
           :key="todo.id"
           :id="todo.id"
       />
+      <v-list-item v-else>
+        <template v-slot:title>
+          Aucune tâche à réaliser
+        </template>
+      </v-list-item>
     </v-list>
     <v-btn
         color="blue"
