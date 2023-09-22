@@ -3,15 +3,15 @@
     <template v-slot:prepend>
       <v-icon
           icon="mdi-check-circle"
-          :color="isDone ?
+          :color="todo!.isDone ?
           'green' : 'red'"
-          @click.stop="$emit('updateTodoStatus', id)"
+          @click.stop="updateTodoStatus"
       />
     </template>
     <template v-slot:default>
       <v-text-field
           style="width: 400px"
-          v-model="description"
+          v-model="todo!.description"
           variant="solo"
           counter="16"
           placeholder="Faire les courses"
@@ -26,7 +26,7 @@
           <v-icon icon="mdi-trash-can-outline"
                   v-bind="props"
                   :color="isHovering ? 'red-accent-4' : undefined"
-                  @click.stop="$emit('deleteTodo', id)"/>
+                  @click.stop="deleteTodo"/>
         </template>
       </v-hover>
     </template>
@@ -42,15 +42,31 @@ export default {
 </script>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 import type {TodoProperties} from "@/types/TodoProperties";
+import {useTodoStore} from "@/store/todo";
 
-const description = ref('');
-defineProps<TodoProperties>();
-defineEmits<{
-  (e: 'deleteTodo', id: number): void
-  (e: 'updateTodoStatus', id: number): void
-}>()
+const store = useTodoStore();
+const todo = ref<TodoProperties | null>(null);
+const props = defineProps({
+  id: Number
+});
+
+onBeforeMount(async () => {
+  todo.value = store.getTodo(props.id!);
+})
+async function updateTodoStatus() {
+  if (todo.value){
+    todo.value.isDone = !(todo.value.isDone)
+    await store.updateTodo(todo.value);
+  }
+}
+
+async function deleteTodo() {
+  if (todo.value){
+    await store.removeTodo(todo.value.id);
+  }
+}
 </script>
 
 <style scoped>

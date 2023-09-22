@@ -6,11 +6,7 @@
           v-for="(todo, i) in todos"
           :key="i"
           :id="todo.id"
-          :value="todo"
-          :description="todo.description"
-          :isDone="todo.isDone"
-          @deleteTodo="deleteTodo"
-          @updateTodoStatus="updateTodoStatus"/>
+      />
     </v-list>
     <v-btn
         color="blue"
@@ -24,7 +20,7 @@
       <v-card>
         <v-text-field
             label="Task"
-            v-model="description"
+            v-model="newTodoDescription"
             variant="solo"
             counter="16"
             placeholder="Type here..."
@@ -61,44 +57,24 @@ export default {
 </script>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 import Todo from "@/components/Todo.vue";
-import type {TodoProperties} from "@/types/TodoProperties";
-import customAxios from "@/axios";
+import {useTodoStore} from "@/store/todo";
+import {storeToRefs} from "pinia";
 
 const dialogAddTodo = ref(false);
-const description = ref('');
-const todos = ref<TodoProperties[]>([]);
+const newTodoDescription = ref('');
+const store = useTodoStore();
+const {todos} = storeToRefs(store);
 
-onMounted(async () => {
-  const {data} = await customAxios.get("api/todos");
-  if (data){
-    data.forEach((todo: TodoProperties) => todos.value.push(todo));
-  }
+onBeforeMount(async () => {
+  await store.loadTodos();
 })
-function addTodo() {
-  // TODO make API call and if success, add todo
-  const todo = {
-    id: 9, // TODO replace by id from DB
-    description: description.value,
-    isDone: false
-  };
-  todos.value.push(todo);
-  description.value = '';
+
+async function addTodo() {
+  await store.addTodo(newTodoDescription.value);
+  newTodoDescription.value = '';
   dialogAddTodo.value = false;
-}
-
-function deleteTodo(id: number) {
-  // TODO make API call before and if success, remove todo
-  todos.value = todos.value.filter(todo => todo.id !== id);
-}
-
-function updateTodoStatus(id: number) {
-  const todo = todos.value.find(todo => todo.id === id);
-  if (todo) {
-    // TODO make API call before and if success, update value
-    todo.isDone = !todo.isDone;
-  }
 }
 </script>
 
