@@ -3,8 +3,8 @@
     <v-list class="elevation-2">
       <v-list-subheader color="blue">TODOLIST</v-list-subheader>
       <todo
-          v-for="(todo, i) in todos"
-          :key="i"
+          v-for="(todo) in todos"
+          :key="todo.id"
           :id="todo.id"
       />
     </v-list>
