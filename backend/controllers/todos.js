@@ -13,6 +13,16 @@ exports.addTodo = (async (req, res, next) => {
   try {
     const { description } = req.body;
     const todo = await todosService.addTodo(description);
+    res.status(201).json(todo);
+  } catch (err) {
+    next(err);
+  }
+});
+
+exports.removeTodo = (async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const todo = await todosService.removeTodo(id);
     res.status(200).json(todo);
   } catch (err) {
     next(err);
