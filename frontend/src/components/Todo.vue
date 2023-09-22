@@ -45,7 +45,7 @@ export default {
 <script setup lang="ts">
 import {onBeforeMount, ref} from "vue";
 import type {TodoProperties} from "@/types/TodoProperties";
-import {useTodoStore} from "@/store/todo";
+import {useTodoStore} from "@/stores/todo";
 
 const store = useTodoStore();
 const todo = ref<TodoProperties | null>(null);

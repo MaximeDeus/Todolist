@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column" style="gap: 50px"> <!-- Todo remove div once v-dialog/v-btn will be moved to App component (when store will be added) -->
+  <div class="d-flex flex-column" style="gap: 50px"> <!-- Todo remove div once v-dialog/v-btn will be moved to App component (when stores will be added) -->
     <v-list class="elevation-2">
       <v-list-subheader color="blue">TODOLIST</v-list-subheader>
       <todo
@@ -59,7 +59,7 @@ export default {
 <script setup lang="ts">
 import {onBeforeMount, ref} from "vue";
 import Todo from "@/components/Todo.vue";
-import {useTodoStore} from "@/store/todo";
+import {useTodoStore} from "@/stores/todo";
 import {storeToRefs} from "pinia";
 
 const dialogAddTodo = ref(false);
