@@ -31,7 +31,8 @@ export const useTodoStore = defineStore('todo', () => {
     }
 
     async function updateTodo(todo : TodoProperties) {
-        await customAxios.patch(`api/todos/`, todo);
+        const {id, ...rest} = todo;
+        await customAxios.patch(`api/todos/${todo.id}`, rest);
         const todoIndex = todos.value.findIndex(t => t.id !== todo.id);
         todos.value[todoIndex] = todo;
     }

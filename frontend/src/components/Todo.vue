@@ -15,7 +15,8 @@
           variant="solo"
           counter="16"
           placeholder="Faire les courses"
-          maxlength="16"> <!-- todo handle min length validator -->
+          maxlength="16"
+          @keyup.enter="updateTodoDescription"> <!-- todo handle min length validator -->
 
       </v-text-field>
     </template>
@@ -58,6 +59,12 @@ onBeforeMount(async () => {
 async function updateTodoStatus() {
   if (todo.value){
     todo.value.isDone = !(todo.value.isDone)
+    await store.updateTodo(todo.value);
+  }
+}
+
+async function updateTodoDescription() {
+  if (todo.value){
     await store.updateTodo(todo.value);
   }
 }
