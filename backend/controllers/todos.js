@@ -8,3 +8,13 @@ exports.getTodos = (async (req, res, next) => {
     next(err);
   }
 });
+
+exports.addTodo = (async (req, res, next) => {
+  try {
+    const { description } = req.body;
+    const todo = await todosService.addTodo(description);
+    res.status(200).json(todo);
+  } catch (err) {
+    next(err);
+  }
+});
