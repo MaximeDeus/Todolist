@@ -51,6 +51,7 @@ import {useTodoStore} from "@/stores/todo";
 
 const store = useTodoStore();
 const todo = ref<TodoProperties | null>(null);
+const latestDescriptionValue = ref<string | null> (null);
 const hintSuccessMessage = ref<string | undefined> ();
 const props = defineProps({
   id: Number
@@ -58,6 +59,7 @@ const props = defineProps({
 
 onBeforeMount(async () => {
   todo.value = store.getTodo(props.id!);
+  updateLatestDescriptionValue();
 })
 
 const rules = ref({
@@ -75,10 +77,19 @@ function removeHintMessageOnBlur(isFocused: boolean) {
     hintSuccessMessage.value = undefined
   }
 }
+
+function updateLatestDescriptionValue(){
+  if (todo.value){
+    latestDescriptionValue.value = todo.value.description;
+  }
+}
 async function updateTodoDescription() {
-  if (todo.value && todo.value.description !== ""){
+  if (todo.value &&
+      todo.value.description !== "" &&
+      todo.value.description !== latestDescriptionValue.value){
     await store.updateTodo(todo.value);
     hintSuccessMessage.value = "La tâche a été mise à jour";
+    updateLatestDescriptionValue();
   }
 }
 
