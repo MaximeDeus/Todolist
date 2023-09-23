@@ -17,8 +17,8 @@
           counter="16"
           placeholder="Faire les courses"
           maxlength="16"
-          :hint="hintSuccessMessage"
-          @update:focused="removeHintMessageOnBlur"
+          :hint="hintMessage"
+          @update:focused="setHintMessage"
           @keyup.enter="updateTodoDescription">
       </v-text-field>
     </template>
@@ -42,6 +42,11 @@ export default {
   name: "Todo"
 }
 
+enum Hint {
+  HIDDEN = "",
+  INFO = "Appuyez sur \"Entrée\" pour valider",
+  UPDATE_SUCCESS = "La tâche a été mise à jour"
+}
 </script>
 
 <script setup lang="ts">
@@ -52,7 +57,7 @@ import {useTodoStore} from "@/stores/todo";
 const store = useTodoStore();
 const todo = ref<TodoProperties | null>(null);
 const latestDescriptionValue = ref<string | null> (null);
-const hintSuccessMessage = ref<string | undefined> ();
+const hintMessage = ref<Hint> (Hint.HIDDEN);
 const props = defineProps({
   id: Number
 });
@@ -72,10 +77,8 @@ async function updateTodoStatus() {
   }
 }
 
-function removeHintMessageOnBlur(isFocused: boolean) {
-  if (!isFocused && hintSuccessMessage.value){
-    hintSuccessMessage.value = undefined
-  }
+function setHintMessage(isFocused: boolean) {
+  hintMessage.value = isFocused ? Hint.INFO : Hint.HIDDEN;
 }
 
 function updateLatestDescriptionValue(){
@@ -88,7 +91,7 @@ async function updateTodoDescription() {
       todo.value.description !== "" &&
       todo.value.description !== latestDescriptionValue.value){
     await store.updateTodo(todo.value);
-    hintSuccessMessage.value = "La tâche a été mise à jour";
+    hintMessage.value = Hint.UPDATE_SUCCESS;
     updateLatestDescriptionValue();
   }
 }
