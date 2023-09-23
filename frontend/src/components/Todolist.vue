@@ -1,5 +1,5 @@
 <template>
-  <div class="container" style="width: 450px">
+  <div class="container" v-if="isLoaded" style="width: 450px">
     <v-list class="elevation-2">
       <v-list-subheader color="blue">TODOLIST</v-list-subheader>
       <transition-group v-if="todos.length > 0" name="list" tag="div" >
@@ -69,6 +69,7 @@ import Todo from "@/components/Todo.vue";
 import {useTodoStore} from "@/stores/todo";
 import {storeToRefs} from "pinia";
 
+const isLoaded = ref(false);
 const dialogAddTodo = ref(false);
 const newTodoDescription = ref('');
 const store = useTodoStore();
@@ -76,6 +77,7 @@ const {todos} = storeToRefs(store);
 
 onBeforeMount(async () => {
   await store.loadTodos();
+  isLoaded.value = true;
 })
 
 async function addTodo() {
@@ -100,18 +102,15 @@ async function addTodo() {
   opacity: 0;
 }*/
 
-.list-enter-active, .list-leave-active {
-  transition: opacity 0.5s, transform 0.5s;
+.list-enter-active,
+.list-leave-active {
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
-.list-enter, .list-leave-to {
-  opacity: 0;
-  transform: translateY(0);
-}
-
-.list-enter-first, .list-leave-last {
-  opacity: 0;
+.list-enter-from,
+.list-leave-to {
   transform: translateY(-20px);
+  opacity: 0;
 }
 
 .v-list {
