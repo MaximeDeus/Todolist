@@ -12,12 +12,14 @@
       <v-text-field
           style="width: 300px"
           v-model="todo!.description"
+          :rules="[rules.required]"
           variant="solo"
           counter="16"
           placeholder="Faire les courses"
           maxlength="16"
-          @keyup.enter="updateTodoDescription"> <!-- todo handle min length validator -->
-
+          :hint="hintSuccessMessage"
+          @update:focused="removeHintMessageOnBlur"
+          @keyup.enter="updateTodoDescription">
       </v-text-field>
     </template>
 
@@ -49,12 +51,17 @@ import {useTodoStore} from "@/stores/todo";
 
 const store = useTodoStore();
 const todo = ref<TodoProperties | null>(null);
+const hintSuccessMessage = ref<string | undefined> ();
 const props = defineProps({
   id: Number
 });
 
 onBeforeMount(async () => {
   todo.value = store.getTodo(props.id!);
+})
+
+const rules = ref({
+  required: (value: string) => !!value || 'Veuillez renseigner la tâche',
 })
 async function updateTodoStatus() {
   if (todo.value){
@@ -63,9 +70,15 @@ async function updateTodoStatus() {
   }
 }
 
+function removeHintMessageOnBlur(isFocused: boolean) {
+  if (!isFocused && hintSuccessMessage.value){
+    hintSuccessMessage.value = undefined
+  }
+}
 async function updateTodoDescription() {
-  if (todo.value){
+  if (todo.value && todo.value.description !== ""){
     await store.updateTodo(todo.value);
+    hintSuccessMessage.value = "La tâche a été mise à jour";
   }
 }
 
