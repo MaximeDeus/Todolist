@@ -4,7 +4,7 @@ import Todolist from "@/components/Todolist.vue";
 
 <template>
   <v-app>
-    <v-main class="d-flex align-center justify-center">
+    <v-main class="d-flex justify-center">
       <todolist/>
     </v-main>
   </v-app>

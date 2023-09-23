@@ -10,7 +10,7 @@
     </template>
     <template v-slot:default>
       <v-text-field
-          style="width: 400px"
+          style="width: 300px"
           v-model="todo!.description"
           variant="solo"
           counter="16"

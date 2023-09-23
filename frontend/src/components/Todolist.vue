@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column" style="gap: 50px"> <!-- Todo remove div once v-dialog/v-btn will be moved to App component (when stores will be added) -->
+  <div class="container">
     <v-list class="elevation-2">
       <v-list-subheader color="blue">TODOLIST</v-list-subheader>
       <todo
@@ -22,14 +22,14 @@
     </v-btn>
     <v-dialog
         v-model="dialogAddTodo"
-        width="400px">
+        width="300px">
       <v-card>
         <v-text-field
-            label="Task"
+            label="Nouvelle tâche"
             v-model="newTodoDescription"
             variant="solo"
             counter="16"
-            placeholder="Type here..."
+            placeholder="Faire les courses"
             maxlength="16"> <!-- todo handle min length validator -->
 
         </v-text-field>
@@ -85,5 +85,20 @@ async function addTodo() {
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 100px;
+}
+
+.v-list {
+  max-height: 400px;
+}
+
+.v-btn {
+  width: fit-content;
+  align-self: center;
+}
 
 </style>
