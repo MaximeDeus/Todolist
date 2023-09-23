@@ -1,13 +1,14 @@
 <template>
-  <div class="container">
+  <div class="container" style="width: 450px">
     <v-list class="elevation-2">
       <v-list-subheader color="blue">TODOLIST</v-list-subheader>
+      <transition-group v-if="todos.length > 0" name="list" tag="div" >
       <todo
-          v-if="todos.length > 0"
           v-for="(todo) in todos"
           :key="todo.id"
           :id="todo.id"
       />
+      </transition-group>
       <v-list-item v-else>
         <template v-slot:title>
           Aucune tâche à réaliser
@@ -90,6 +91,27 @@ async function addTodo() {
   flex-direction: column;
   gap: 25px;
   margin-top: 100px;
+}
+
+/*.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}*/
+
+.list-enter-active, .list-leave-active {
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.list-enter, .list-leave-to {
+  opacity: 0;
+  transform: translateY(0);
+}
+
+.list-enter-first, .list-leave-last {
+  opacity: 0;
+  transform: translateY(-20px);
 }
 
 .v-list {
