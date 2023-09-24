@@ -1,0 +1,18 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "no-console": ["error", { "allow": ["error"] }],
+    "max-len": ["error", { "code": 150 }],
+    "no-underscore-dangle": "off" // allow for _id field
+  },
+  "overrides": [{
+    "files": [ "controllers/*.js" ],
+    "rules": {
+      "consistent-return": "off" // Express router doesn't need to return anything (use 'res' instead)
+    }
+  }],
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}

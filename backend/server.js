@@ -1,9 +1,9 @@
 const http = require('http');
 const express = require('express');
-const router = require("./routes");
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const errorControllerHandler = require("./middleware/errorControllerHandler");
+const router = require('./routes');
+const errorControllerHandler = require('./middleware/errorControllerHandler');
 
 function init() {
   const app = express();
