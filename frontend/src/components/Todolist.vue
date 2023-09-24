@@ -1,19 +1,22 @@
 <template>
-  <v-list class="elevation-2" v-if="isLoaded">
-    <v-list-subheader color="blue">TODOLIST</v-list-subheader>
-    <transition-group v-if="todos.length > 0" name="list" tag="div">
-      <todo-item
-          v-for="(todo) in todos"
-          :key="todo.id"
-          :id="todo.id"
-      />
-    </transition-group>
-    <v-list-item v-else>
-      <template v-slot:title>
-        Aucune tâche à réaliser
-      </template>
-    </v-list-item>
-  </v-list>
+  <v-progress-circular v-if="!isLoaded" indeterminate color="blue"/>
+  <div v-else>
+    <v-list class="elevation-2">
+      <v-list-subheader color="blue">TODOLIST</v-list-subheader>
+      <transition-group v-if="todos.length > 0" name="list" tag="div">
+        <todo-item
+            v-for="(todo) in todos"
+            :key="todo.id"
+            :id="todo.id"
+        />
+      </transition-group>
+      <v-list-item v-else>
+        <template v-slot:title>
+          Aucune tâche à réaliser
+        </template>
+      </v-list-item>
+    </v-list>
+  </div>
 </template>
 
 <script lang="ts">
