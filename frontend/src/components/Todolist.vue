@@ -25,15 +25,9 @@
         v-model="dialogAddTodo"
         width="300px">
       <v-card>
-        <v-text-field
-            label="Nouvelle tâche"
-            v-model="newTodoDescription"
-            variant="solo"
-            counter="16"
-            placeholder="Faire les courses"
-            maxlength="16"> <!-- todo handle min length validator -->
-
-        </v-text-field>
+        <todo-input
+            @validate="addTodo">
+        </todo-input>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -42,13 +36,6 @@
               @click="dialogAddTodo = false"
           >
             Fermer
-          </v-btn>
-          <v-btn
-              color="blue-darken-1"
-              variant="text"
-              @click="addTodo"
-          >
-            Valider
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -68,10 +55,10 @@ import {onBeforeMount, ref} from "vue";
 import Todo from "@/components/Todo.vue";
 import {useTodoStore} from "@/stores/todo";
 import {storeToRefs} from "pinia";
+import TodoInput from "@/components/TodoInput.vue";
 
 const isLoaded = ref(false);
 const dialogAddTodo = ref(false);
-const newTodoDescription = ref('');
 const store = useTodoStore();
 const {todos} = storeToRefs(store);
 
@@ -80,9 +67,8 @@ onBeforeMount(async () => {
   isLoaded.value = true;
 })
 
-async function addTodo() {
-  await store.addTodo(newTodoDescription.value);
-  newTodoDescription.value = '';
+async function addTodo(description: string) {
+  await store.addTodo(description);
   dialogAddTodo.value = false;
 }
 </script>

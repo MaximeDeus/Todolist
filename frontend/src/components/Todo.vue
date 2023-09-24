@@ -9,18 +9,11 @@
       />
     </template>
     <template v-slot:default>
-      <v-text-field
-          style="width: 300px"
-          v-model="todo!.description"
-          :rules="[rules.required]"
-          variant="solo"
-          counter="16"
-          placeholder="Faire les courses"
-          maxlength="16"
-          :hint="hintMessage"
-          @update:focused="setHintMessage"
-          @keyup.enter="updateTodoDescription">
-      </v-text-field>
+      <todo-input
+          :latest-description="todo!.description"
+          :onSuccess="isUpdateSucceed"
+          @validate="updateTodoDescription">
+      </todo-input>
     </template>
 
     <template v-slot:append>
@@ -42,34 +35,25 @@ export default {
   name: "Todo"
 }
 
-enum Hint {
-  HIDDEN = "",
-  INFO = "Appuyez sur \"Entrée\" pour valider",
-  UPDATE_SUCCESS = "La tâche a été mise à jour"
-}
 </script>
 
 <script setup lang="ts">
 import {onBeforeMount, ref} from "vue";
 import type {TodoProperties} from "@/types/TodoProperties";
 import {useTodoStore} from "@/stores/todo";
+import TodoInput from "@/components/TodoInput.vue";
 
 const store = useTodoStore();
 const todo = ref<TodoProperties | null>(null);
-const latestDescriptionValue = ref<string | null> (null);
-const hintMessage = ref<Hint> (Hint.HIDDEN);
+const isUpdateSucceed = ref<boolean>(false);
 const props = defineProps({
   id: Number
 });
 
 onBeforeMount(async () => {
   todo.value = store.getTodo(props.id!);
-  updateLatestDescriptionValue();
 })
 
-const rules = ref({
-  required: (value: string) => !!value || 'Veuillez renseigner la tâche',
-})
 async function updateTodoStatus() {
   if (todo.value){
     todo.value.isDone = !(todo.value.isDone)
@@ -77,22 +61,13 @@ async function updateTodoStatus() {
   }
 }
 
-function setHintMessage(isFocused: boolean) {
-  hintMessage.value = isFocused ? Hint.INFO : Hint.HIDDEN;
-}
 
-function updateLatestDescriptionValue(){
+async function updateTodoDescription(description: string) {
   if (todo.value){
-    latestDescriptionValue.value = todo.value.description;
-  }
-}
-async function updateTodoDescription() {
-  if (todo.value &&
-      todo.value.description !== "" &&
-      todo.value.description !== latestDescriptionValue.value){
+    todo.value.description = description;
+    isUpdateSucceed.value = false;
     await store.updateTodo(todo.value);
-    hintMessage.value = Hint.UPDATE_SUCCESS;
-    updateLatestDescriptionValue();
+    isUpdateSucceed.value = true;
   }
 }
 
