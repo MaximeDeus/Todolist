@@ -32,7 +32,7 @@
 
 <script lang="ts">
 export default {
-  name: "Todo"
+  name: "todo-item"
 }
 
 </script>

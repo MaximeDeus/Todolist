@@ -3,7 +3,7 @@
     <v-list class="elevation-2">
       <v-list-subheader color="blue">TODOLIST</v-list-subheader>
       <transition-group v-if="todos.length > 0" name="list" tag="div" >
-      <todo
+      <todo-item
           v-for="(todo) in todos"
           :key="todo.id"
           :id="todo.id"
@@ -47,16 +47,16 @@
 <script lang="ts">
 export default {
 
-  name: "Todolist"
+  name: "todolist-item"
 }
 </script>
 
 <script setup lang="ts">
 import {onBeforeMount, ref} from "vue";
-import Todo from "@/components/Todo.vue";
 import {useTodoStore} from "@/stores/todo";
 import {storeToRefs} from "pinia";
 import TodoInput from "@/components/TodoInput.vue";
+import TodoItem from "@/components/Todo.vue";
 
 const isLoaded = ref(false);
 const dialogAddTodo = ref(false);

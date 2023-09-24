@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Todolist from "@/components/Todolist.vue";
+import TodolistItem from "@/components/Todolist.vue";
 </script>
 
 <template>
   <v-app>
     <v-main class="d-flex justify-center">
-      <todolist/>
+      <todolist-item/>
     </v-main>
   </v-app>
 </template>
