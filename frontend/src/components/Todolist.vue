@@ -26,6 +26,7 @@
         width="300px">
       <v-card>
         <todo-input
+            :autofocus="true"
             @validate="addTodo">
         </todo-input>
         <v-card-actions>

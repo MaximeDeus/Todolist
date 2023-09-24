@@ -1,5 +1,6 @@
 <template>
   <v-text-field
+      :autofocus="autofocus"
       style="width: 300px"
       v-model="description"
       :rules="[rules.required]"
@@ -28,6 +29,7 @@ import {onBeforeMount} from "vue";
 const hintMessage = ref<HintMessages>(HintMessages.HIDDEN);
 const description = ref<string>("");
 const props = defineProps({
+  autofocus: {type: Boolean, default: false},
   latestDescription: {type: String, default: ""},
   onSuccess: Boolean,
 });
