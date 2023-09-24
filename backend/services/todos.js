@@ -1,6 +1,6 @@
 const db = require("../db");
 exports.getTodos = async () => {
-    return await db.any('SELECT * FROM todos');
+    return await db.any('SELECT * FROM todos ORDER BY "id"');
 }
 
 exports.addTodo = async (description) => {

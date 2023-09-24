@@ -9,16 +9,11 @@
       />
     </template>
     <template v-slot:default>
-      <v-text-field
-          style="width: 400px"
-          v-model="todo!.description"
-          variant="solo"
-          counter="16"
-          placeholder="Faire les courses"
-          maxlength="16"
-          @keyup.enter="updateTodoDescription"> <!-- todo handle min length validator -->
-
-      </v-text-field>
+      <todo-input
+          :latest-description="todo!.description"
+          :onSuccess="isUpdateSucceed"
+          @validate="updateTodoDescription">
+      </todo-input>
     </template>
 
     <template v-slot:append>
@@ -45,10 +40,12 @@ export default {
 <script setup lang="ts">
 import {onBeforeMount, ref} from "vue";
 import type {TodoProperties} from "@/types/TodoProperties";
-import {useTodoStore} from "@/store/todo";
+import {useTodoStore} from "@/stores/todo";
+import TodoInput from "@/components/TodoInput.vue";
 
 const store = useTodoStore();
 const todo = ref<TodoProperties | null>(null);
+const isUpdateSucceed = ref<boolean>(false);
 const props = defineProps({
   id: Number
 });
@@ -56,6 +53,7 @@ const props = defineProps({
 onBeforeMount(async () => {
   todo.value = store.getTodo(props.id!);
 })
+
 async function updateTodoStatus() {
   if (todo.value){
     todo.value.isDone = !(todo.value.isDone)
@@ -63,9 +61,13 @@ async function updateTodoStatus() {
   }
 }
 
-async function updateTodoDescription() {
+
+async function updateTodoDescription(description: string) {
   if (todo.value){
+    todo.value.description = description;
+    isUpdateSucceed.value = false;
     await store.updateTodo(todo.value);
+    isUpdateSucceed.value = true;
   }
 }
 
