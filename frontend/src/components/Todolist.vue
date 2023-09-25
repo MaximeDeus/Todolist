@@ -1,22 +1,19 @@
 <template>
-  <v-progress-circular v-if="!isLoaded" indeterminate color="blue"/>
-  <div v-else>
-    <v-list class="elevation-2">
-      <v-list-subheader color="blue">TODOLIST</v-list-subheader>
-      <transition-group v-if="todos.length > 0" name="list" tag="div">
-        <todo-item
-            v-for="(todo) in todos"
-            :key="todo.id"
-            :id="todo.id"
-        />
-      </transition-group>
-      <v-list-item v-else>
-        <template v-slot:title>
-          Aucune tâche à réaliser
-        </template>
-      </v-list-item>
-    </v-list>
-  </div>
+  <v-list class="elevation-2">
+    <v-list-subheader color="blue">TODOLIST</v-list-subheader>
+    <transition-group v-if="todos.length > 0" name="list" tag="div">
+      <todo-item
+          v-for="(todo) in todos"
+          :key="todo.id"
+          :id="todo.id"
+      />
+    </transition-group>
+    <v-list-item v-else>
+      <template v-slot:title>
+        Aucune tâche à réaliser
+      </template>
+    </v-list-item>
+  </v-list>
 </template>
 
 <script lang="ts">
@@ -27,19 +24,13 @@ export default {
 </script>
 
 <script setup lang="ts">
-import {onBeforeMount, ref} from "vue";
 import {useTodoStore} from "@/stores/todo";
 import {storeToRefs} from "pinia";
 import TodoItem from "@/components/Todo.vue";
 
-const isLoaded = ref(false);
 const store = useTodoStore();
 const {todos} = storeToRefs(store);
 
-onBeforeMount(async () => {
-  await store.loadTodos();
-  isLoaded.value = true;
-})
 </script>
 
 <style scoped>
